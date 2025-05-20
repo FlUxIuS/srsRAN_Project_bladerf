@@ -280,14 +280,14 @@ public:
       //  on_error("Invalid time source {}. Supported: {}", sync_src, span<const std::string>(time_sources));
       //   return;
       //}
-      //std::vector<std::string> clock_sources = usrp->get_clock_sources(0);
-      //if (std::find(clock_sources.begin(), clock_sources.end(), clock_src) == clock_sources.end()) {
-      //  on_error("Invalid clock source {}. Supported: {}", clock_src, span<const std::string>(clock_sources));
-      //  return;
-      //}
+      std::vector<std::string> clock_sources = usrp->get_clock_sources(0);
+      if (std::find(clock_sources.begin(), clock_sources.end(), clock_src) == clock_sources.end()) {
+        on_error("Invalid clock source {}. Supported: {}", clock_src, span<const std::string>(clock_sources));
+        return;
+      }
 
       //usrp->set_time_source(sync_src);
-      //usrp->set_clock_source(clock_src);
+      usrp->set_clock_source(clock_src);
     });
 #else
     return safe_execution([this, &sync_source, &clock_source]() { usrp->set_sync_source(clock_source, sync_source); });
